@@ -4,40 +4,8 @@
     <h1> GAME PAGE </h1>
     <div class="question-box">
 
-      <div class="question" style="width: 100%">
+      <div class="question" style="width: 100%" @docs="docs">
         <p>QUESTION1</p>
-          <label class="custom-control custom-radio">
-            <input id="radio1" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer1</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer2</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer3</span>
-          </label>
-        <p>QUESTION2</p>
-          <label class="custom-control custom-radio">
-            <input id="radio1" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer1</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer2</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer3</span>
-          </label>
-        <p>QUESTION3</p>
           <label class="custom-control custom-radio">
             <input id="radio1" name="radio" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
@@ -99,7 +67,20 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
-  }  
+  },
+  methods: {
+    docs() {
+      return $('p').hide();
+    }
+  },
+  mounted() {
+    this.docs()
+  }
+  // ready () {
+  //   $(document).ready(function() {
+  //     $('p').hide();
+  //   })
+  // }  
 }
 </script>
 
