@@ -4,12 +4,12 @@
     <h1> GAME PAGE </h1>
     <div class="question-box">
 
-      <div class="question" style="width: 100%" @docs="docs">
-        <p>QUESTION1</p>
+      <div class="question" style="width: 100%">
+        <p>{{items[0].content}}</p>
           <label class="custom-control custom-radio">
             <input id="radio1" name="radio" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer1</span>
+            <span class="custom-control-description">{{items[0].answer}}</span>
           </label>
           <label class="custom-control custom-radio">
             <input id="radio2" name="radio" type="radio" class="custom-control-input">
@@ -65,22 +65,52 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      items: []
     }
   },
   methods: {
     docs() {
       return $('p').hide();
+    },
+    getData: function() {
+      var self = this;
+      axios.get('http://localhost:3000/questions')
+      .then(function (res) {
+        console.log(res.data[0]);
+        res.data.forEach((x) => {
+          self.items.push(x);
+        })
+
+        // self.item = self.items[0];
+        // console.log(self.item)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+    getTime: function() {
+      var self = this;
+      axios.get('http://localhost:3000/time')
+      .then(function (res) {
+        console.log(res);
+        // res.data.forEach((x) => {
+        //   self.items.push(x);
+        // })
+
+        // self.item = self.items[0];
+        // console.log(self.item)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   },
   mounted() {
-    this.docs()
+    // this.docs();
+    this.getData();
+    this.getTime();
   }
-  // ready () {
-  //   $(document).ready(function() {
-  //     $('p').hide();
-  //   })
-  // }  
 }
 </script>
 
