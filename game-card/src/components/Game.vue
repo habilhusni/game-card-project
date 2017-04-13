@@ -31,20 +31,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>12</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>8</td>
+              <tr v-for="(user,index) in user">
+                <th scope="row">{{index+1}}</th>
+                <td>{{user.username}}</td>
+                <td>{{user.score}}</td>
               </tr>
             </tbody>
           </table>
@@ -66,13 +56,11 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      items: []
+      items: [],
+      user: []
     }
   },
   methods: {
-    docs() {
-      return $('p').hide();
-    },
     getData: function() {
       var self = this;
       axios.get('http://localhost:3000/questions')
@@ -89,29 +77,39 @@ export default {
         console.log(error);
       });
     },
-    getTime: function() {
+    getUser: function() {
       var self = this;
-      axios.get('http://localhost:3000/time')
-      .then(function (res) {
-        console.log(res);
-        // res.data.forEach((x) => {
-        //   self.items.push(x);
-        // })
+      var config = {
+        apiKey: "AIzaSyDVs6XW2IOtF3mGshWj_Af5EqYnIuBHFJw",
+        authDomain: "game-card-67d72.firebaseapp.com",
+        databaseURL: "https://game-card-67d72.firebaseio.com",
+        projectId: "game-card-67d72",
+        storageBucket: "game-card-67d72.appspot.com",
+        messagingSenderId: "873257844103"
+      };
 
-        // self.item = self.items[0];
-        // console.log(self.item)
+      firebase.initializeApp(config);
+      
+      firebase.database().ref('users/').on('value', function(snapshot) {
+        // console.log('_-------------------', snapshot.val())
+        console.log(self.user)
+        snapshot.forEach((childSnapshot) => {
+          // console.log(childSnapshot.val().username)
+          let username = childSnapshot.val();
+          self.user.push(username)
+          console.log(self.user);
+        })  
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+
     }
   },
   mounted() {
-    // this.docs();
     this.getData();
-    this.getTime();
+    this.getUser();
+    // this.getTime();
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -63,7 +63,7 @@ $(function(){
 	let key = ''
 
 
-	validate key submitted by users
+	// validate key submitted by users
 	$('#login').submit(function(event){
 		event.preventDefault()
 		key = $('#answer').val()
