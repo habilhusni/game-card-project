@@ -5,22 +5,18 @@
     <div class="question-box">
 
       <div class="question" style="width: 100%">
-        <p>{{items[0].content}}</p>
-          <label class="custom-control custom-radio">
-            <input id="radio1" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">{{items[0].answer}}</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer2</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radio2" name="radio" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Answer3</span>
-          </label>
+          <div class="wrapp-soal" v-for="item in items">
+            <div class="soal">
+              <p>{{item.content}}</p>
+            </div>
+            <div class="jawaban">
+              <label class="custom-control custom-radio" v-for="(answer, index) in item.answer">
+                <input name="radio" type="radio" class="custom-control-input" @click="cekJawaban(item, index)">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ index+1 }} - {{ answer }}</span>
+              </label>
+            </div>
+          </div>
 
           <table class="table" style="width: 100%">
             <thead>
@@ -57,7 +53,8 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       items: [],
-      user: []
+      user: [],
+      score: 0
     }
   },
   methods: {
@@ -65,7 +62,7 @@ export default {
       var self = this;
       axios.get('http://localhost:3000/questions')
       .then(function (res) {
-        console.log(res.data[0]);
+        console.log(res.data);
         res.data.forEach((x) => {
           self.items.push(x);
         })
@@ -89,7 +86,7 @@ export default {
       };
 
       firebase.initializeApp(config);
-      
+
       firebase.database().ref('users/').on('value', function(snapshot) {
         // console.log('_-------------------', snapshot.val())
         console.log(self.user)
@@ -98,9 +95,27 @@ export default {
           let username = childSnapshot.val();
           self.user.push(username)
           console.log(self.user);
-        })  
+        })
       })
-
+    },
+    cekJawaban: function(item, idx) {
+      console.log('item ', item);
+      console.log(idx);
+      var self = this;
+      // console.log(this.score);
+      if (idx == item.trueAnswer) {
+        // return this.score += 100
+        // firebase.database().ref('users/').on('value', function(snapshot) {
+        //   // console.log('_-------------------', snapshot.val())
+        //   console.log(self.user)
+        //   snapshot.forEach((childSnapshot) => {
+        //     console.log(childSnapshot.val())
+        //     // firebase.database().ref('users/-KhaATvueucw813npqqu').update({score: childSnapshot.val().score+ 100})
+        //   })
+        //
+        // })
+        console.log(this.score);
+      }
     }
   },
   mounted() {
@@ -123,7 +138,7 @@ export default {
   .question {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
+    align-items: flex-start;
   }
 
 </style>
