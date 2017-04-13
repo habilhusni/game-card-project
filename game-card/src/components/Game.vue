@@ -11,7 +11,7 @@
             </div>
             <div class="jawaban">
               <label class="custom-control custom-radio" v-for="(answer, index) in item.answer">
-                <input name="radio" type="radio" class="custom-control-input" @click="cekJawaban(item, index)">
+                <input name="radio" type="submit" class="custom-control-input" @click="cekJawaban(item, index)">
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">{{ index+1 }} - {{ answer }}</span>
               </label>
@@ -89,31 +89,26 @@ export default {
 
       firebase.database().ref('users/').on('value', function(snapshot) {
         // console.log('_-------------------', snapshot.val())
-        console.log(self.user)
         snapshot.forEach((childSnapshot) => {
           // console.log(childSnapshot.val().username)
           let username = childSnapshot.val();
           self.user.push(username)
-          console.log(self.user);
         })
       })
     },
     cekJawaban: function(item, idx) {
-      console.log('item ', item);
-      console.log(idx);
       var self = this;
       // console.log(this.score);
       if (idx == item.trueAnswer) {
-        // return this.score += 100
-        // firebase.database().ref('users/').on('value', function(snapshot) {
-        //   // console.log('_-------------------', snapshot.val())
-        //   console.log(self.user)
-        //   snapshot.forEach((childSnapshot) => {
-        //     console.log(childSnapshot.val())
-        //     // firebase.database().ref('users/-KhaATvueucw813npqqu').update({score: childSnapshot.val().score+ 100})
-        //   })
-        //
-        // })
+
+        firebase.database().ref('users/').on('value', function(snapshot) {
+          console.log('_-------------------', snapshot.val()["-KhaATvueucw813npqqu"].score)
+          var nilai = snapshot.val()["-KhaATvueucw813npqqu"].score
+
+          firebase.database().ref('users/-KhaATvueucw813npqqu').update({score: nilai + 100})
+
+
+        })
         console.log(this.score);
       }
     }
